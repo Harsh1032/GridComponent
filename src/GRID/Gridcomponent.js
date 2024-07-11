@@ -1,29 +1,27 @@
-// src/Grid/Gridcomponent.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid } from '@mui/material';
-import { styled } from '@mui/system';
 
 class Gridcomponent extends Component {
   render() {
     const { rowColumns, children, spacing } = this.props;
 
-    const GridContainerStyled = styled(Grid)({
+    const containerStyle = {
       display: 'flex',
       flexDirection: 'column',
       gap: `${spacing}px`,
-    });
+    };
 
-    const GridItemStyled = styled(Grid)(({ flexBasis }) => ({
+    const itemStyle = (flexBasis) => ({
       flexBasis,
       margin: `${spacing}px 0`, // Adjusting spacing for each item
       boxSizing: 'border-box',
-    }));
+    });
 
     let childIndex = 0;
 
     return (
-      <GridContainerStyled container>
+      <Grid container style={containerStyle}>
         {rowColumns.map((row, rowIndex) => (
           <div className="row" key={rowIndex} style={{ display: 'flex', width: '100%' }}>
             {Array.from({ length: row.columnCount }).map((_, colIndex) => {
@@ -32,18 +30,14 @@ class Gridcomponent extends Component {
               childIndex += 1;
 
               return (
-                <GridItemStyled
-                  key={`${rowIndex}-${colIndex}`}
-                  flexBasis={flexBasis}
-                  item
-                >
+                <Grid item key={`${rowIndex}-${colIndex}`} style={itemStyle(flexBasis)}>
                   {child || null} {/* Display child if exists, else null */}
-                </GridItemStyled>
+                </Grid>
               );
             })}
           </div>
         ))}
-      </GridContainerStyled>
+      </Grid>
     );
   }
 }
